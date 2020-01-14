@@ -1,0 +1,7 @@
+name = "AbaqusUnitCell"
+uuid = "af3e129c-b24d-41b7-9263-67b25837aa88"
+authors = ["Raphael Suda <raphael.suda@gmx.net>"]
+version = "0.1.0"
+
+[deps]
+StringArrayEditor = "9ac07dbc-a56c-11e8-2053-773943ca4811"
