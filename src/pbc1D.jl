@@ -12,135 +12,62 @@ function pbc1D!(abq::AbqModel)
 	l = abq.dim
 	# initiate counter for equation numbering
 	i=1
-	push!(abq.eqns,Equation(i,["NWT","SWT","NWB","SWB"],[c[1],c[1],c[1],c[1]],[1.0,-1.0,-1.0,1.0]))
-	i+=1
-	push!(abq.eqns,Equation(i,["SET","SWT","SEB","SWB"],[c[1],c[1],c[1],c[1]],[1.0,-1.0,-1.0,1.0]))
-	i+=1
-	push!(abq.eqns,Equation(i,["NEB","NWB","SEB","SWB","SWB","SWT","SEB","SET","SWB","SWT","NWB","NWT"],
-							[c[1],c[1],c[1],c[1],c[2],c[2],c[2],c[2],c[3],c[3],c[3],c[3]],
-							[1.0,-1.0,-1.0,1.0,
-							 l[c[2]]/l[c[1]],-l[c[2]]/l[c[1]],-l[c[2]]/l[c[1]],l[c[2]]/l[c[1]],
-							 l[c[3]]/l[c[1]],-l[c[3]]/l[c[1]],-l[c[3]]/l[c[1]],l[c[3]]/l[c[1]]]))
-	for a = 2:3
-		i+=1
-		push!(abq.eqns,Equation(i,["NEB","NWB","SEB","SWB"],[c[a],c[a],c[a],c[a]],[1.0,-1.0,-1.0,1.0]))
-	end	
-	i+=1
-	push!(abq.eqns,Equation(i,["NET","NWT","SEB","SWB","SWB","SWT","SEB","SET","SWB","SWT","NWB","NWT"],
-							[c[1],c[1],c[1],c[1],c[2],c[2],c[2],c[2],c[3],c[3],c[3],c[3]],
-							[1.0,-1.0,-1.0,1.0,
-							 l[c[2]]/l[c[1]],-l[c[2]]/l[c[1]],-l[c[2]]/l[c[1]],l[c[2]]/l[c[1]],
-							 l[c[3]]/l[c[1]],-l[c[3]]/l[c[1]],-l[c[3]]/l[c[1]],l[c[3]]/l[c[1]]]))
-	for a = 2:3
-		i+=1
-		push!(abq.eqns,Equation(i,["NET","NWT","SET","SWT"],[c[a],c[a],c[a],c[a]],[1.0,-1.0,-1.0,1.0]))
-	end	
-	# TODO equations for edge nodes
-	for n = 1:length(abq.edges["SE"])
-		i+=1
-		x = abq.edges["SE"][n].coords
-		push!(abq.eqns,Equation(i,["SE-$(n)","SW-$(n)","SEB","SWB"],[c[1],c[1],c[1],c[1]],[1.0,-1.0,-1.0,1.0]))
-		for a = 2:3
+	################
+	# VERTEX NODES #
+	################
+	# no equations for vertices needed!
+	##############
+	# EDGE NODES #
+	##############
+	for n = 1:length(abq.edges["ST"])
+		x = abq.edges["ST"][n].coords
+		for a = 1:3
 			i+=1
-			push!(abq.eqns,Equation(i,["SE-$(n)","SW-$(n)","SEB","SWB","SWT","SET"],
+			push!(abq.eqns,Equation(i,["ST-$(n)","SB-$(n)","SWT","SWB","SET","SEB"],
 									  [c[a],c[a],c[a],c[a],c[a],c[a]],
-									  [1.0,-1.0,x[c[1]]/l[c[1]]-1.0,1.0-x[c[1]]/l[c[1]],x[c[1]]/l[c[1]],-x[c[1]]/l[c[1]]]))
+									  [1.0,-1.0,x[c[2]]/l[c[2]]-1.0,1.0-x[c[2]]/l[c[2]],-x[c[2]]/l[c[2]],x[c[2]]/l[c[2]]]))
 		end
 	end
-	for n = 1:length(abq.edges["NW"])
-		i+=1
-		x = abq.edges["NW"][n].coords
-		push!(abq.eqns,Equation(i,["NW-$(n)","SW-$(n)","NWB","SWB"],[c[1],c[1],c[1],c[1]],[1.0,-1.0,-1.0,1.0]))
-		for a = 2:3
+	for n = 1:length(abq.edges["WT"])
+		x = abq.edges["WT"][n].coords
+		for a = 1:3
 			i+=1
-			push!(abq.eqns,Equation(i,["NW-$(n)","SW-$(n)","NWB","SWB","SWT","NWT"],
+			push!(abq.eqns,Equation(i,["WT-$(n)","WB-$(n)","SWT","SWB","NWT","NWB"],
 									  [c[a],c[a],c[a],c[a],c[a],c[a]],
-									  [1.0,-1.0,x[c[1]]/l[c[1]]-1.0,1.0-x[c[1]]/l[c[1]],x[c[1]]/l[c[1]],-x[c[1]]/l[c[1]]]))
-		end
-	end
-	for n = 1:length(abq.edges["NE"])
-		i+=1
-		x = abq.edges["NE"][n].coords
-		push!(abq.eqns,Equation(i,["NE-$(n)","NW-$(n)","SEB","SWB","SWB","SWT","SEB","SET","SWB","SWT","NWB","NWT"],
-								  [c[1],c[1],c[1],c[1],c[2],c[2],c[2],c[2],c[3],c[3],c[3],c[3]],
-								  [1.0,-1.0,-1.0,1.0,
-								   l[c[2]]/l[c[1]],l[c[2]]/l[c[1]],l[c[2]]/l[c[1]],l[c[2]]/l[c[1]],
-								   l[c[3]]/l[c[1]],l[c[3]]/l[c[1]],l[c[3]]/l[c[1]],l[c[3]]/l[c[1]]]))
-		for a = 2:3
-			i+=1
-			push!(abq.eqns,Equation(i,["NE-$(n)","NW-$(n)","SEB","SWB","SWT","SET"],
-									  [c[a],c[a],c[a],c[a],c[a],c[a]],
-									  [1.0,-1.0,x[c[1]]/l[c[1]]-1.0,1.0-x[c[1]]/l[c[1]],x[c[1]]/l[c[1]],-x[c[1]]/l[c[1]]]))
-		end
-	end
-	for n = 1:length(abq.edges["EB"])
-		i+=1
-		x = abq.edges["EB"][n].coords
-		push!(abq.eqns,Equation(i,["EB-$(n)","WB-$(n)","SEB","SWB","SWB","SWT","SEB","SET"],
-								  [c[1],c[1],c[1],c[1],c[2],c[2],c[2],c[2]],
-								  [1.0,-1.0,-1.0,1.0,x[c[2]]/l[c[1]],-x[c[2]]/l[c[1]],-x[c[2]]/l[c[1]],x[c[2]]/l[c[1]]]))
-		for a = 2:3
-			i+=1
-			push!(abq.eqns,Equation(i,["EB-$(n)","WB-$(n)","SEB","SWB"],[c[a],c[a],c[a],c[a]],[1.0,-1.0,-1.0,1.0]))
+									  [1.0,-1.0,x[c[3]]/l[c[3]]-1.0,1.0-x[c[3]]/l[c[3]],-x[c[3]]/l[c[3]],x[c[3]]/l[c[3]]]))
 		end
 	end
 	for n = 1:length(abq.edges["ET"])
-		i+=1
 		x = abq.edges["ET"][n].coords
-		push!(abq.eqns,Equation(i,["ET-$(n)","WT-$(n)","SEB","SWB","SWB","SWT","SEB","SET"],
-								  [c[1],c[1],c[1],c[1],c[2],c[2],c[2],c[2]],
-								  [1.0,-1.0,-1.0,1.0,x[c[2]]/l[c[1]],-x[c[2]]/l[c[1]],-x[c[2]]/l[c[1]],x[c[2]]/l[c[1]]]))
-		for a = 2:3
+		for a = 1:3
 			i+=1
-			push!(abq.eqns,Equation(i,["ET-$(n)","WT-$(n)","SEB","SWB"],[c[a],c[a],c[a],c[a]],[1.0,-1.0,-1.0,1.0]))
-		end
-	end
-	for n = 1:length(abq.edges["NB"])
-		i+=1
-		x = abq.edges["NB"][n].coords
-		push!(abq.eqns,Equation(i,["NB-$(n)","SB-$(n)","NWB","SWB","SWB","SWT","NWB","NWT"],
-								  [c[1],c[1],c[1],c[1],c[3],c[3],c[3],c[3]],
-								  [1.0,-1.0,-1.0,1.0,x[c[3]]/l[c[1]],-x[c[3]]/l[c[1]],-x[c[3]]/l[c[1]],x[c[3]]/l[c[1]]]))
-		for a = 2:3
-			i+=1
-			push!(abq.eqns,Equation(i,["NB-$(n)","SB-$(n)","NWB","SWB"],[c[a],c[a],c[a],c[a]],[1.0,-1.0,-1.0,1.0]))
+			push!(abq.eqns,Equation(i,["ET-$(n)","EB-$(n)","SET","SEB","NET","NEB"],
+									  [c[a],c[a],c[a],c[a],c[a],c[a]],
+									  [1.0,-1.0,x[c[3]]/l[c[3]]-1.0,1.0-x[c[3]]/l[c[3]],-x[c[3]]/l[c[3]],x[c[3]]/l[c[3]]]))
 		end
 	end
 	for n = 1:length(abq.edges["NT"])
-		i+=1
 		x = abq.edges["NT"][n].coords
-		push!(abq.eqns,Equation(i,["NT-$(n)","ST-$(n)","NWB","SWB","SWB","SWT","NWB","NWT"],
-								  [c[1],c[1],c[1],c[1],c[3],c[3],c[3],c[3]],
-								  [1.0,-1.0,-1.0,1.0,x[c[3]]/l[c[1]],-x[c[3]]/l[c[1]],-x[c[3]]/l[c[1]],x[c[3]]/l[c[1]]]))
-		for a = 2:3
+		for a = 1:3
 			i+=1
-			push!(abq.eqns,Equation(i,["NT-$(n)","ST-$(n)","NWB","SWB"],[c[a],c[a],c[a],c[a]],[1.0,-1.0,-1.0,1.0]))
+			push!(abq.eqns,Equation(i,["NT-$(n)","NB-$(n)","NWT","NWB","NET","NEB"],
+									  [c[a],c[a],c[a],c[a],c[a],c[a]],
+									  [1.0,-1.0,x[c[2]]/l[c[2]]-1.0,1.0-x[c[2]]/l[c[2]],-x[c[2]]/l[c[2]],x[c[2]]/l[c[2]]]))
 		end
 	end
-	for n = 1:length(abq.faces["E"])
-		i+=1
-		x = abq.faces["E"][n].coords
-		push!(abq.eqns,Equation(i,["E-$(n)","W-$(n)","SEB","SWB","SWB","SWT","SEB","SET"],
-								  [c[1],c[1],c[1],c[1],c[2],c[2],c[2],c[2]],
-								  [1.0,-1.0,-1.0,1.0,x[c[2]]/l[c[1]],-x[c[2]]/l[c[1]],-x[c[2]]/l[c[1]],x[c[2]]/l[c[1]]]))
-		for a = 2:3
+	##############
+	# FACE NODES #
+	##############
+	for n = 1:length(abq.faces["T"])
+		x = abq.faces["T"][n].coords
+		for a = 1:3
 			i+=1
-			push!(abq.eqns,Equation(i,["E-$(n)","W-$(n)","SEB","SWB","SWT","SET"],
-									  [c[a],c[a],c[a],c[a],c[a],c[a]],
-									  [1.0,-1.0,x[c[1]]/l[c[1]]-1.0,1.0-x[c[1]]/l[c[1]],x[c[1]]/l[c[1]],-x[c[1]]/l[c[1]]]))
-		end
-	end
-	for n = 1:length(abq.faces["N"])
-		i+=1
-		x = abq.faces["N"][n].coords
-		push!(abq.eqns,Equation(i,["N-$(n)","S-$(n)","NWB","SWB","SWB","SWT","NWB","NWT"],
-								  [c[1],c[1],c[1],c[1],c[3],c[3],c[3],c[3]],
-								  [1.0,-1.0,-1.0,1.0,x[c[3]]/l[c[1]],-x[c[3]]/l[c[1]],-x[c[3]]/l[c[1]],x[c[3]]/l[c[1]]]))
-		for a = 2:3
-			i+=1
-			push!(abq.eqns,Equation(i,["N-$(n)","S-$(n)","NWB","SWB","SWT","NWT"],
-									  [c[a],c[a],c[a],c[a],c[a],c[a]],
-									  [1.0,-1.0,x[c[1]]/l[c[1]]-1.0,1.0-x[c[1]]/l[c[1]],x[c[1]]/l[c[1]],-x[c[1]]/l[c[1]]]))
+			push!(abq.eqns,Equation(i,["T-$(n)","B-$(n)","SWT","SWB","SET","SEB","NWT","NWB","NET","NEB"],
+									  [c[a],c[a],c[a],c[a],c[a],c[a],c[a],c[a]],
+									  [1.0,-1.0,-1.0+x[c[2]]/l[c[2]]+x[c[2]]/l[c[2]]-x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],1.0-x[c[2]]/l[c[2]]-x[c[2]]/l[c[2]]+x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],
+									   -x[c[2]]/l[c[2]]+x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],x[c[2]]/l[c[2]]-x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],
+									   -x[c[3]]/l[c[3]]+x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],x[c[3]]/l[c[3]]-x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],
+									   -x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]]]))
 		end
 	end
 	println("$(i) equations written to AbqModel.")
