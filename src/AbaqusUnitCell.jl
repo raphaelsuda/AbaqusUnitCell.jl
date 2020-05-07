@@ -839,6 +839,7 @@ end
 include("abqModel.jl")
 include("nodeDesignation.jl")
 include("periodicBoundaryConditions.jl")
+include("pbc1D.jl")
 include("pbc2D.jl")
 include("pbc3D.jl")
 include("loadBoundaryConditions.jl")
