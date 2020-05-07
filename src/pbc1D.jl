@@ -93,7 +93,7 @@ function pbc1D!(abq::AbqModel)
 		for a = 1:3
 			i+=1
 			push!(abq.eqns,Equation(i,["T-$(n)","B-$(n)","SWT","SWB","SET","SEB","NWT","NWB","NET","NEB"],
-									  [c[a],c[a],c[a],c[a],c[a],c[a],c[a],c[a]],
+									  [c[a],c[a],c[a],c[a],c[a],c[a],c[a],c[a],c[a],c[a]],
 									  [1.0,-1.0,-1.0+x[c[2]]/l[c[2]]+x[c[2]]/l[c[2]]-x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],1.0-x[c[2]]/l[c[2]]-x[c[2]]/l[c[2]]+x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],
 									   -x[c[2]]/l[c[2]]+x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],x[c[2]]/l[c[2]]-x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],
 									   -x[c[3]]/l[c[3]]+x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],x[c[3]]/l[c[3]]-x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],
