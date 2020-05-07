@@ -20,7 +20,13 @@ function pbc1D!(abq::AbqModel)
 	# EDGE NODES #
 	##############
 	for n = 1:length(abq.edges["ST"])
-		x = abq.edges["ST"][n].node.coords
+		this_node = abq.edges["ST"])[n]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
+				continue
+			end
+		end
+		x = this_node.node.coords
 		for a = 1:3
 			i+=1
 			push!(abq.eqns,Equation(i,["ST-$(n)","SB-$(n)","SWT","SWB","SET","SEB"],
@@ -29,7 +35,13 @@ function pbc1D!(abq::AbqModel)
 		end
 	end
 	for n = 1:length(abq.edges["WT"])
-		x = abq.edges["WT"][n].node.coords
+		this_node = abq.edges["WT"])[n]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
+				continue
+			end
+		end
+		x = this_node.node.coords
 		for a = 1:3
 			i+=1
 			push!(abq.eqns,Equation(i,["WT-$(n)","WB-$(n)","SWT","SWB","NWT","NWB"],
@@ -38,7 +50,13 @@ function pbc1D!(abq::AbqModel)
 		end
 	end
 	for n = 1:length(abq.edges["ET"])
-		x = abq.edges["ET"][n].node.coords
+		this_node = abq.edges["ET"])[n]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
+				continue
+			end
+		end
+		x = this_node.node.coords
 		for a = 1:3
 			i+=1
 			push!(abq.eqns,Equation(i,["ET-$(n)","EB-$(n)","SET","SEB","NET","NEB"],
@@ -47,7 +65,13 @@ function pbc1D!(abq::AbqModel)
 		end
 	end
 	for n = 1:length(abq.edges["NT"])
-		x = abq.edges["NT"][n].node.coords
+		this_node = abq.edges["NT"])[n]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
+				continue
+			end
+		end
+		x = this_node.node.coords
 		for a = 1:3
 			i+=1
 			push!(abq.eqns,Equation(i,["NT-$(n)","NB-$(n)","NWT","NWB","NET","NEB"],
@@ -59,7 +83,13 @@ function pbc1D!(abq::AbqModel)
 	# FACE NODES #
 	##############
 	for n = 1:length(abq.faces["T"])
-		x = abq.faces["T"][n].node.coords
+		this_node = abq.faces["T"])[n]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
+				continue
+			end
+		end
+		x = this_node.node.coords
 		for a = 1:3
 			i+=1
 			push!(abq.eqns,Equation(i,["T-$(n)","B-$(n)","SWT","SWB","SET","SEB","NWT","NWB","NET","NEB"],
