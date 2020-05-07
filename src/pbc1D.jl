@@ -20,7 +20,7 @@ function pbc1D!(abq::AbqModel)
 	# EDGE NODES #
 	##############
 	for n = 1:length(abq.edges["ST"])
-		this_node = abq.edges["ST"])[n]
+		this_node = abq.edges["ST"][n]
 		if this_node.instance in keys(abq.slaves)
 			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
@@ -35,7 +35,7 @@ function pbc1D!(abq::AbqModel)
 		end
 	end
 	for n = 1:length(abq.edges["WT"])
-		this_node = abq.edges["WT"])[n]
+		this_node = abq.edges["WT"][n]
 		if this_node.instance in keys(abq.slaves)
 			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
@@ -50,7 +50,7 @@ function pbc1D!(abq::AbqModel)
 		end
 	end
 	for n = 1:length(abq.edges["ET"])
-		this_node = abq.edges["ET"])[n]
+		this_node = abq.edges["ET"][n]
 		if this_node.instance in keys(abq.slaves)
 			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
@@ -65,7 +65,7 @@ function pbc1D!(abq::AbqModel)
 		end
 	end
 	for n = 1:length(abq.edges["NT"])
-		this_node = abq.edges["NT"])[n]
+		this_node = abq.edges["NT"][n]
 		if this_node.instance in keys(abq.slaves)
 			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
@@ -83,7 +83,7 @@ function pbc1D!(abq::AbqModel)
 	# FACE NODES #
 	##############
 	for n = 1:length(abq.faces["T"])
-		this_node = abq.faces["T"])[n]
+		this_node = abq.faces["T"][n]
 		if this_node.instance in keys(abq.slaves)
 			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
