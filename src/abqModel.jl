@@ -187,6 +187,44 @@ end
 
 """
 
+	LoadCase3D(strain::Matrix{Number}, abq::AbqModel; new=true, name="lc")
+
+Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
+"""
+function LoadCase3D(strain::Matrix{Number}, abq::AbqModel; new=true, name="lc")
+	!(length(size(strain))==2 && size(strain, 1)==3 && size(strain,2)==3) && @error "Expected a (3, 3)-array as strain tensor! Got a $(size(strain))-array!"
+	boundaries = Array{BoundCon,1}()
+	Δu_1 = strain * [1; 0; 0] * abq.dim[abq.csys[1]]
+	Δu_2 = strain * [0; 1; 0] * abq.dim[abq.csys[2]]
+	Δu_3 = strain * [0; 0; 1] * abq.dim[abq.csys[3]]
+	i = 0
+	name = new ? "$(name)*" : name
+	push!(boundaries, BoundCon("BC-1", new, "SWT", 1, Δu_1[1]))
+	push!(boundaries, BoundCon("BC-2", new, "SWT", 2, Δu_1[2]))
+	push!(boundaries, BoundCon("BC-3", new, "SWT", 3, Δu_1[3]))
+	push!(boundaries, BoundCon("BC-4", new, "NWB", 1, Δu_2[1]))
+	push!(boundaries, BoundCon("BC-5", new, "NWB", 2, Δu_2[2]))
+	push!(boundaries, BoundCon("BC-6", new, "NWB", 3, Δu_2[3]))
+	push!(boundaries, BoundCon("BC-7", new, "SEB", 1, Δu_3[1]))
+	push!(boundaries, BoundCon("BC-8", new, "SEB", 2, Δu_3[2]))
+	push!(boundaries, BoundCon("BC-9", new, "SEB", 3, Δu_3[3]))
+	return LoadCase(name,boundaries)
+end
+
+"""
+
+	LoadCase(strain::Matrix{Number}, abq::AbqModel; new=true, name="lc")
+
+Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
+"""
+function LoadCase(strain::Matrix{Number}, abq::AbqModel; new=true, name="lc")
+	abq.pbcDim == 1 && (@warn "Function not yet defined for 1D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
+	abq.pbcDim == 2 && (@warn "Function not yet defined for 2D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
+	abq.pbcDim == 3 && return LoadCase3D(strain, abq; new=new, name=name)
+end
+
+"""
+
 	LoadCase(name::AbstractString, val::Float64, abq::AbqModel, new::Bool)
 
 """
