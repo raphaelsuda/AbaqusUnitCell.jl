@@ -218,9 +218,9 @@ end
 Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
 """
 function LoadCase(strain::Matrix{<:Number}, abq::AbqModel; new=true, name="lc")
-	abq.pbcDim == 1 && (@warn "Function not yet defined for 1D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
-	abq.pbcDim == 2 && (@warn "Function not yet defined for 2D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
-	abq.pbcDim == 3 && return LoadCase3D(strain, abq; new=new, name=name)
+	abq.pbcdim == 1 && (@warn "Function not yet defined for 1D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
+	abq.pbcdim == 2 && (@warn "Function not yet defined for 2D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
+	abq.pbcdim == 3 && return LoadCase3D(strain, abq; new=new, name=name)
 end
 
 """
