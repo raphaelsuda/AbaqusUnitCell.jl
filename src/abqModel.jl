@@ -57,7 +57,7 @@ mutable struct AbqModel
 		eqns = Array{Equation,1}()
 		steps = Array{Step,1}()
 		new(file, inp, parts, instances, nodes, slaves, minC, maxC, dim,
-			refAxis, defRA, vertexFinder, defVF csys, tol, defTol, ecc, vert, edge, face, pbcdim, defDim, eqns, steps)
+			refAxis, defRA, vertexFinder, defVF, csys, tol, defTol, ecc, vert, edge, face, pbcdim, defDim, eqns, steps)
 	end
 end
 
