@@ -191,7 +191,7 @@ end
 
 Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
 """
-function LoadCase3D(strain::Matrix{Number}, abq::AbqModel; new=true, name="lc")
+function LoadCase3D(strain::Array{Number,2}, abq::AbqModel; new=true, name="lc")
 	!(length(size(strain))==2 && size(strain, 1)==3 && size(strain,2)==3) && @error "Expected a (3, 3)-array as strain tensor! Got a $(size(strain))-array!"
 	boundaries = Array{BoundCon,1}()
 	Δu_1 = strain * [1; 0; 0] * abq.dim[abq.csys[1]]
@@ -217,7 +217,7 @@ end
 
 Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
 """
-function LoadCase(strain::Matrix{Number}, abq::AbqModel; new=true, name="lc")
+function LoadCase(strain::Array{Number,2}, abq::AbqModel; new=true, name="lc")
 	abq.pbcDim == 1 && (@warn "Function not yet defined for 1D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
 	abq.pbcDim == 2 && (@warn "Function not yet defined for 2D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
 	abq.pbcDim == 3 && return LoadCase3D(strain, abq; new=new, name=name)
