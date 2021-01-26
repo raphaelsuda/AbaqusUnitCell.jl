@@ -231,8 +231,9 @@ end
 
 """
 function nodeDesignation!(abq::AbqModel)
-	abq.defRA ? println("Reference axis not explicitly set. Default $(abq.refAxis) is used.") : print("")
-	#	findVertices!(abq)
+	abq.defRA && @info "Reference axis not explicitly set. Default $(abq.refAxis) is used."
+	abq.defVF && @info "Vertex finder not explicitely set. Vertices are being found automatically by default."
+	abq.vertexFinder && findVertices!(abq)
 	findEdges!(abq)
 	findFaces!(abq)
 	println("Node designation written to AbqModel.")

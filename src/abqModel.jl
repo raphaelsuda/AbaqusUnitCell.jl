@@ -18,6 +18,8 @@ mutable struct AbqModel
 	dim::Vector
 	refAxis::AbstractString
 	defRA::Bool
+	vertexFinder::Bool
+	defVF::Bool
 	csys::Array{Int,1}
 	tol::Float64
 	defTol::Bool
@@ -41,6 +43,8 @@ mutable struct AbqModel
 		minC, maxC, dim = getLength(nodes)
 		refAxis = "z"
 		defRA = true
+		vertexFinder = true
+		defVF = true
 		csys = coords[refAxis]
 		tol = 0.001
 		defTol = true
@@ -53,7 +57,7 @@ mutable struct AbqModel
 		eqns = Array{Equation,1}()
 		steps = Array{Step,1}()
 		new(file, inp, parts, instances, nodes, slaves, minC, maxC, dim,
-			refAxis, defRA, csys, tol, defTol, ecc, vert, edge, face, pbcdim, defDim, eqns, steps)
+			refAxis, defRA, vertexFinder, defVF csys, tol, defTol, ecc, vert, edge, face, pbcdim, defDim, eqns, steps)
 	end
 end
 
@@ -104,6 +108,17 @@ function setPBCdim!(abq::AbqModel, dim::Int)
 	else
 		throw(DimensionError)
 	end
+end
+
+"""
+
+	setVertexFinder!(abq::AbqModel, val::Bool)
+
+"""
+function setCheckVertices!(abq::AbqModel, val::Bool)
+	abq.vertexFinder = val
+	abq.defVF = false
+	val ? println("Vertices are found automatically") : println("Vertex sets have to be modelled explicitely.")
 end
 
 """
