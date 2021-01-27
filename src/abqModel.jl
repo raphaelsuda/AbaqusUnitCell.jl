@@ -118,7 +118,7 @@ end
 function setCheckVertices!(abq::AbqModel, val::Bool)
 	abq.vertexFinder = val
 	abq.defVF = false
-	val ? @info "Vertices are found automatically" : @info "Vertex sets have to be modelled explicitely."
+	val ? (@info "Vertices are found automatically") : (@info "Vertex sets have to be modelled explicitely.")
 end
 
 """
