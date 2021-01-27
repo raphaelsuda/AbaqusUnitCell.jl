@@ -223,7 +223,7 @@ mutable struct Step
 
 	"""
 	function Step(name::AbstractString,lc::LoadCase,out::Array{Output,1})
-		new(name,false,1000,0.001,0.05,0.001,1.0,1.0e-35,0.1,20,lc,out)
+		new(name,false,1000,0.0,0.0,1.0,1.0,1.0e-5,1.0,5,lc,out)
 	end
 	"""
 
@@ -234,7 +234,7 @@ mutable struct Step
 		out = [Output("Node","U"),
 			   Output("Element","E"),
 			   Output("Element","S")]
-		new(name,false,1000,0.001,0.05,0.001,1.0,1.0e-35,0.1,20,lc,out)
+		new(name,false,1000,0.0,0.0,1.0,1.0,1.0e-5,1.0,5,lc,out)
 	end
 end
 

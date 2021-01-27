@@ -117,23 +117,30 @@ end
 
 """
 function generate(step::Step)
+# 	stepString = ["** --------------------------------------------------",
+# 				  "**","** STEP: $(step.name)","**",
+# 				  "*Step, name=$(step.name), nlgeom=$(step.nl ? "YES" : "NO"), inc=$(step.inc)",
+# 				  "*Static, $(step.stab!=0 ? "stabilize=$(step.stab), " : "")$(step.allsdtol!=0 ? "allsdtol=$(step.allsdtol), " : "")continue=NO",
+# 				  "$(step.iStart), $(step.iTot), $(step.iMin), $(step.iMax)"]
+# 	append!(stepString,["**","** CONTROLS","**",
+# 						"*Controls, reset",
+# 						"*Controls, parameters=time incrementation",
+# 						", , , , , , , $(step.nImax), , , ",
+# 						", , , , , , 4.,",
+# 						", 4., , , , , ,"])
+# 	append!(stepString,generate(step.loadCase))
 	stepString = ["** --------------------------------------------------",
 				  "**","** STEP: $(step.name)","**",
-				  "*Step, name=$(step.name), nlgeom=$(step.nl ? "YES" : "NO"), inc=$(step.inc)",
-				  "*Static, $(step.stab!=0 ? "stabilize=$(step.stab), " : "")$(step.allsdtol!=0 ? "allsdtol=$(step.allsdtol), " : "")continue=NO",
+				  "*Step, name=$(step.name), nlgeom=NO"
+				  "*Static",
 				  "$(step.iStart), $(step.iTot), $(step.iMin), $(step.iMax)"]
-	append!(stepString,["**","** CONTROLS","**",
-						"*Controls, reset",
-						"*Controls, parameters=time incrementation",
-						", , , , , , , $(step.nImax), , , ",
-						", , , , , , 4.,",
-						", 4., , , , , ,"])
 	append!(stepString,generate(step.loadCase))
 	append!(stepString,["**","** OUTPUT REQUESTS","**"])
-	append!(stepString,["*Output, field"])
-	for o in step.output
-		append!(stepString,generate(o))
-	end
+# 	append!(stepString,["*Output, field, variable=PRESELECT"])
+	append!(stepString,["*Output, field, variable=PRESELECT"])
+# 	for o in step.output
+# 		append!(stepString,generate(o))
+# 	end
 	for v in keys(vertices)
 		append!(stepString,["*Node Output, nset=$(v)",
 							"RF,"])
