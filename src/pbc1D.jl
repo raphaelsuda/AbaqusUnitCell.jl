@@ -100,6 +100,6 @@ function pbc1D!(abq::AbqModel)
 									   -x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]],x[c[2]]/l[c[2]]*x[c[3]]/l[c[3]]]))
 		end
 	end
-	println("$(i) equations written to AbqModel.")
+	@info "$(i) equations written to AbqModel."
 	return
 end

@@ -141,6 +141,6 @@ function pbc3D!(abq::AbqModel)
 			i+=1
 		end
 	end
-	println("$(i) equations written to AbqModel.")
+	@info "$(i) equations written to AbqModel."
 	return
 end

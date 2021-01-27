@@ -20,7 +20,7 @@ end
 
 """
 function pbc!(abq::AbqModel)
-	abq.defDim ? println("Periodicity not explicitly defined. Default value $(abq.pbcdim)-dimensional periodicity is used.") : print("")
+	abq.defDim && @info "Periodicity not explicitly defined. Default value $(abq.pbcdim)-dimensional periodicity is used."
 	if abq.pbcdim == 1
 		pbc1D!(abq)
 	elseif abq.pbcdim == 2

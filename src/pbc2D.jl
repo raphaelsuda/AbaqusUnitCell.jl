@@ -196,6 +196,6 @@ function pbc2D!(abq::AbqModel)
 									  [1.0,-1.0,x[c[1]]/l[c[1]]-1.0,1.0-x[c[1]]/l[c[1]],x[c[1]]/l[c[1]],-x[c[1]]/l[c[1]]]))
 		end
 	end
-	println("$(i) equations written to AbqModel.")
+	@info "$(i) equations written to AbqModel."
 	return
 end

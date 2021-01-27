@@ -75,7 +75,7 @@ end
 """
 function checkNum(d::Dict,k1::AbstractString, k2::AbstractString)
 	if length(d[k1]) != length(d[k2])
-		println("Node numbers of $k1 and $k2 are not equal!")
+		@warn "Node numbers of $k1 and $k2 are not equal!"
 	end
 	return
 end
@@ -131,7 +131,7 @@ function findVertices!(abq::AbqModel)
 	for v in keys(vertices)
 		abq.vertices[v] = findVertex(abq, v)
 	end
-	println("Vertices written to AbqModel.")
+	@info "Vertices written to AbqModel."
 	return
 end
 
@@ -171,7 +171,7 @@ function findEdges!(abq::AbqModel)
 	checkNum(abq.edges,"WT","ET")
 	checkNum(abq.edges,"SB","NB")
 	checkNum(abq.edges,"ST","NT")
-	println("Edges written to AbqModel.")
+	@info "Edges written to AbqModel."
 	return
 end
 
@@ -209,7 +209,7 @@ function findFaces!(abq::AbqModel)
 	checkNum(abq.faces,"W","E")
 	# Check if faces South and North have equal number of nodes
 	checkNum(abq.faces,"S","N")
-	println("Faces written to AbqModel.")
+	@info "Faces written to AbqModel."
 	return
 end
 
@@ -236,7 +236,7 @@ function nodeDesignation!(abq::AbqModel)
 	abq.vertexFinder && findVertices!(abq)
 	findEdges!(abq)
 	findFaces!(abq)
-	println("Node designation written to AbqModel.")
+	@info "Node designation written to AbqModel."
 	return
 end
 

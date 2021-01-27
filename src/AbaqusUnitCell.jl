@@ -393,7 +393,7 @@ const rotate_re = Regex("\\s*"*float_re*(",\\s*"*float_re)^6)
 function load_rotate(rot_line::AbstractString)
 	match_bool = [true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,true,false,false]
 	m = match(rotate_re,rot_line).captures[match_bool]
-	@show m
+	@info m
 	vals = parse.(Float64,m)
 	start_rot_axis = vals[1:3]
 	end_rot_axis = vals[4:6]

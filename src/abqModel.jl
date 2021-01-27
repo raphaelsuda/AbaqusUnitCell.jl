@@ -88,7 +88,7 @@ function setRefAxis!(abq::AbqModel, axis::AbstractString)
 		abq.refAxis = axis
 		abq.csys = coords[axis]
 		abq.defRA = false
-		println("Reference axis set to $axis.")
+		@info "Reference axis set to $axis."
 	else
 		throw(AxisError)
 	end
@@ -104,7 +104,7 @@ function setPBCdim!(abq::AbqModel, dim::Int)
 	if dim > 0 && dim < 4
 		abq.pbcdim = dim
 		abq.defDim = false
-		println("PBCs are set to $(dim)-dimensional periodicity.")
+		@info "PBCs are set to $(dim)-dimensional periodicity."
 	else
 		throw(DimensionError)
 	end
@@ -118,7 +118,7 @@ end
 function setCheckVertices!(abq::AbqModel, val::Bool)
 	abq.vertexFinder = val
 	abq.defVF = false
-	val ? println("Vertices are found automatically") : println("Vertex sets have to be modelled explicitely.")
+	val ? @info "Vertices are found automatically" : @info "Vertex sets have to be modelled explicitely."
 end
 
 """
@@ -130,7 +130,7 @@ function setTolerance!(abq::AbqModel, newTol::Number)
 	if newTol >= 0
 		abq.tol = newTol
 		abq.defTol = false
-		println("Tolerance set to $newTol.")
+		@info "Tolerance set to $newTol."
 	else
 		throw(ToleranceError)
 	end
@@ -198,7 +198,7 @@ function updateNodes!(abq::AbqModel)
 		end
 	end
 	insert!(Line(abq.inp,r"End Assembly"),sets)
-	println("Node designation added to input file.")
+	@info "Node designation added to input file."
 	return
 end	
 
@@ -325,7 +325,7 @@ function updatePBC!(abq::AbqModel)
 		append!(eqnString,generate(e))
 	end
 	insert!(Line(abq.inp,r"End Assembly"),eqnString)
-	println("Periodic boundary conditions added to input file.")
+	@info "Periodic boundary conditions added to input file."
 	return
 end
 
@@ -346,7 +346,7 @@ function updateSteps!(abq::AbqModel)
 		append!(stepString,generate(i))
 	end
 	append!(Line(abq.inp,length(abq.inp.data)),stepString)
-	println("Load boundary conditions added to input file.")
+	@info "Load boundary conditions added to input file."
 end
 
 """
@@ -367,6 +367,6 @@ end
 """
 function saveInp(abq::AbqModel,path::AbstractString)
 	save(abq.inp,path)
-	println("Input file written to $(path)")
+	@info "Input file written to $(path)"
 	return
 end
