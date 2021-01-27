@@ -131,12 +131,12 @@ function generate(step::Step)
 # 	append!(stepString,generate(step.loadCase))
 	stepString = ["** --------------------------------------------------",
 				  "**","** STEP: $(step.name)","**",
-				  "*Step, name=$(step.name), nlgeom=NO"
+				  "*Step, name=$(step.name), nlgeom=NO",
 				  "*Static",
 				  "$(step.iStart), $(step.iTot), $(step.iMin), $(step.iMax)"]
 	append!(stepString,generate(step.loadCase))
 	append!(stepString,["**","** OUTPUT REQUESTS","**"])
-# 	append!(stepString,["*Output, field, variable=PRESELECT"])
+# 	append!(stepString,["*Output, field"])
 	append!(stepString,["*Output, field, variable=PRESELECT"])
 # 	for o in step.output
 # 		append!(stepString,generate(o))
