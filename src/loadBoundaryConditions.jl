@@ -141,6 +141,7 @@ function generate(step::Step)
 # 	for o in step.output
 # 		append!(stepString,generate(o))
 # 	end
+ 	append!(stepString, ["*Output, field"])
 	for v in keys(vertices)
 		append!(stepString,["*Node Output, nset=$(v)",
 							"RF,"])
