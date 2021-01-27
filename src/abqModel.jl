@@ -208,7 +208,7 @@ end
 
 Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
 """
-function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; new=true, name="lc")
+function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; new=false, name="lc")
 	!(length(size(strain))==2 && size(strain, 1)==3 && size(strain,2)==3) && @error "Expected a (3, 3)-array as strain tensor! Got a $(size(strain))-array!"
 	boundaries = Array{BoundCon,1}()
 	Δu_1 = strain * [1; 0; 0] * abq.dim[abq.csys[1]]
@@ -216,15 +216,18 @@ function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; new=true, name="lc"
 	Δu_3 = strain * [0; 0; 1] * abq.dim[abq.csys[3]]
 	i = 0
 	name = new ? "$(name)*" : name
-	push!(boundaries, BoundCon("BC-1", new, "SWT", 1, Δu_1[1]))
-	push!(boundaries, BoundCon("BC-2", new, "SWT", 2, Δu_1[2]))
-	push!(boundaries, BoundCon("BC-3", new, "SWT", 3, Δu_1[3]))
-	push!(boundaries, BoundCon("BC-4", new, "NWB", 1, Δu_2[1]))
-	push!(boundaries, BoundCon("BC-5", new, "NWB", 2, Δu_2[2]))
-	push!(boundaries, BoundCon("BC-6", new, "NWB", 3, Δu_2[3]))
-	push!(boundaries, BoundCon("BC-7", new, "SEB", 1, Δu_3[1]))
-	push!(boundaries, BoundCon("BC-8", new, "SEB", 2, Δu_3[2]))
-	push!(boundaries, BoundCon("BC-9", new, "SEB", 3, Δu_3[3]))
+	push!(boundaries, BoundCon("BC-01", new, "SWB", 1))
+	push!(boundaries, BoundCon("BC-02", new, "SWB", 2))
+	push!(boundaries, BoundCon("BC-03", new, "SWB", 3))
+	push!(boundaries, BoundCon("BC-04", new, "SWT", 1, Δu_1[1]))
+	push!(boundaries, BoundCon("BC-05", new, "SWT", 2, Δu_1[2]))
+	push!(boundaries, BoundCon("BC-06", new, "SWT", 3, Δu_1[3]))
+	push!(boundaries, BoundCon("BC-07", new, "NWB", 1, Δu_2[1]))
+	push!(boundaries, BoundCon("BC-08", new, "NWB", 2, Δu_2[2]))
+	push!(boundaries, BoundCon("BC-09", new, "NWB", 3, Δu_2[3]))
+	push!(boundaries, BoundCon("BC-10", new, "SEB", 1, Δu_3[1]))
+	push!(boundaries, BoundCon("BC-11", new, "SEB", 2, Δu_3[2]))
+	push!(boundaries, BoundCon("BC-12", new, "SEB", 3, Δu_3[3]))
 	return LoadCase(name,boundaries)
 end
 
