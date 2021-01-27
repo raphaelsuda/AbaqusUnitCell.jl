@@ -216,9 +216,9 @@ function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; new=false, name="lc
 	Δu_3 = strain * [0; 0; 1] * abq.dim[abq.csys[3]]
 	i = 0
 	name = new ? "$(name)*" : name
-	push!(boundaries, BoundCon("BC-01", new, "SWB", 1))
-	push!(boundaries, BoundCon("BC-02", new, "SWB", 2))
-	push!(boundaries, BoundCon("BC-03", new, "SWB", 3))
+	push!(boundaries, BoundCon("BC-01", new, "SWB", abq.csys[1]))
+	push!(boundaries, BoundCon("BC-02", new, "SWB", abq.csys[2]))
+	push!(boundaries, BoundCon("BC-03", new, "SWB", abq.csys[3]))
 	push!(boundaries, BoundCon("BC-04", new, "SWT", abq.csys[1], Δu_1[1]))
 	push!(boundaries, BoundCon("BC-05", new, "SWT", abq.csys[2], Δu_1[2]))
 	push!(boundaries, BoundCon("BC-06", new, "SWT", abq.csys[3], Δu_1[3]))
