@@ -41,7 +41,7 @@ mutable struct AbqModel
 		parts, instances, nodes = loadGlobNodes(inp)
 		slaves = collect_slaves(inp)
 		minC, maxC, dim = getLength(nodes)
-		refAxis = "z"
+		refAxis = "x"
 		defRA = true
 		vertexFinder = true
 		defVF = true
