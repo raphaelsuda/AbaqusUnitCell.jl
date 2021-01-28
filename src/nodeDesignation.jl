@@ -111,7 +111,7 @@ end
 """
 function findVertex(abq::AbqModel, name::AbstractString)
 	nodeBool = map(abq.nodes) do n
-		!(n.instance in abq.ecc) && # Is instance containing node in ecceptions?
+		!(n.instance in abq.exc) && # Is instance containing node in exceptions?
 		isEqual(n.node.coords[abq.csys[1]], abq.minC[abq.csys[1]] + vertices[name][1] * abq.dim[abq.csys[1]], abq.tol) &&
 		isEqual(n.node.coords[abq.csys[2]], abq.minC[abq.csys[2]] + vertices[name][2] * abq.dim[abq.csys[2]], abq.tol) &&
 		isEqual(n.node.coords[abq.csys[3]], abq.minC[abq.csys[3]] + vertices[name][3] * abq.dim[abq.csys[3]], abq.tol)
@@ -145,7 +145,7 @@ function findEdge(abq::AbqModel, name::AbstractString)
 	axis2 = abq.csys[edgeCS[edges[name][1],1]]
 	axis3 = abq.csys[edgeCS[edges[name][1],2]]
 	nodeBool = map(abq.nodes) do n
-		!(n.instance in abq.ecc) && # Is instance containing node in ecceptions?
+		!(n.instance in abq.exc) && # Is instance containing node in exceptions?
 		n.node.coords[axis1] > abq.minC[axis1] + abq.tol &&
 		n.node.coords[axis1] < abq.minC[axis1] + abq.dim[axis1] - abq.tol &&
 		isEqual(n.node.coords[axis2], abq.minC[axis2] + edges[name][2]*abq.dim[axis2], abq.tol) &&
@@ -186,7 +186,7 @@ function findFace(abq::AbqModel, name::AbstractString)
 	axis2 = abq.csys[faceCS[faces[name][1],1]]
 	axis3 = abq.csys[faceCS[faces[name][1],2]]
 	nodeBool = map(abq.nodes) do n
-		!(n.instance in abq.ecc) && # Is instance containing node in ecceptions?
+		!(n.instance in abq.exc) && # Is instance containing node in exceptions?
 		n.node.coords[axis2] > abq.minC[axis2] + abq.tol &&
 		n.node.coords[axis2] < abq.minC[axis2] + abq.dim[axis2] - abq.tol &&
 		n.node.coords[axis3] > abq.minC[axis3] + abq.tol &&

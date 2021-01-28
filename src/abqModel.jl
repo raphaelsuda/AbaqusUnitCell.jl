@@ -1,7 +1,7 @@
 """
 
 	AbqModel(file::AbstractString, inp::File, nodes::Array{Node,1}, minC::Vector, maxC::Vector, dim::Vector,
-			 refAxis::AbstractString, defRA::Bool, csys::Array{Int,1}, tol::Float64, defTol::Bool, ecc::Array{String,1},
+			 refAxis::AbstractString, defRA::Bool, csys::Array{Int,1}, tol::Float64, defTol::Bool, exc::Array{String,1},
 			 vertices::Dict{AbstractString,Node}, edges::Dict{AbstractString,Array{Node,1}}, faces::Dict{AbstractString,Array{Node,1}},
 			 pbcdim::Int, defDim::Bool, eqns::Array{Equation,1}, steps::Array{Step,1})
 
@@ -23,7 +23,7 @@ mutable struct AbqModel
 	csys::Array{Int,1}
 	tol::Float64
 	defTol::Bool
-	ecc::Array{String,1}
+	exc::Array{String,1}
 	vertices::Dict{AbstractString,GlobNode}
 	edges::Dict{AbstractString,Array{GlobNode,1}}
 	faces::Dict{AbstractString,Array{GlobNode,1}}
@@ -48,7 +48,7 @@ mutable struct AbqModel
 		csys = coords[refAxis]
 		tol = 0.001
 		defTol = true
-		ecc = Array{String,1}()
+		exc = Array{String,1}()
 		vert = Dict{AbstractString,Node}()
 		edge = Dict{AbstractString,Array{Node,1}}()
 		face = Dict{AbstractString,Array{Node,1}}()
@@ -57,7 +57,7 @@ mutable struct AbqModel
 		eqns = Array{Equation,1}()
 		steps = Array{Step,1}()
 		new(file, inp, parts, instances, nodes, slaves, minC, maxC, dim,
-			refAxis, defRA, vertexFinder, defVF, csys, tol, defTol, ecc, vert, edge, face, pbcdim, defDim, eqns, steps)
+			refAxis, defRA, vertexFinder, defVF, csys, tol, defTol, exc, vert, edge, face, pbcdim, defDim, eqns, steps)
 	end
 end
 
@@ -139,26 +139,26 @@ end
 
 """
 
-	setEcceptions!(abq::AbqModel, ecc::Arary{String,1})
+	setExceptions!(abq::AbqModel, exc::Arary{String,1})
 
 """
-function setEcceptions!(abq::AbqModel, ecc::Array{String,1})
-	abq.ecc = ecc
-	print("Ecceptions set for ")
-	n = length(ecc)
+function setExceptions!(abq::AbqModel, exc::Array{String,1})
+	abq.exc = exc
+	print("Exceptions set for ")
+	n = length(exc)
 	for i = 1:n
 		if i == 1
-			print(ecc[i])
+			print(exc[i])
 		elseif i == n
-			print(", and $(ecc[i]).\n")
+			print(", and $(exc[i]).\n")
 		else
-			print(", $(ecc[i])")
+			print(", $(exc[i])")
 		end
 	end
 	counter = 0
 	for i = 1:length(abq.nodes)
 		j = i - counter
-		if abq.nodes[j].instance in ecc
+		if abq.nodes[j].instance in exc
 			deleteat!(abq.nodes,j)
 			counter += 1
 		end
