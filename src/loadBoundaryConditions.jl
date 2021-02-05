@@ -1,14 +1,37 @@
 """
 
-	lbcIniDict
+	lbcIni1DDict
 
 """
-const lbcIniDict = Dict("SWB"=>[1,2,3],
+const lbcIni1DDict = Dict("SWB"=>[1,2,3],
+					"SWT"=>[1,2,3],
+					"NWB"=>[1,2,3],
+					"NWT"=>[1,2,3],
+					"NEB"=>[1,2,3],
+					"NET"=>[1,2,3],
+					"SEB"=>[1,2,3],
+					"SET"=>[1,2,3])
+"""
+
+	lbcIni2DDict
+
+"""
+const lbcIni2DDict = Dict("SWB"=>[1,2,3],
 					"SWT"=>[2,3],
 					"NWB"=>[1,2,3],
 					"NWT"=>[2,3],
 					"SEB"=>[1,2,3],
 					"SET"=>[2,3])
+
+"""
+
+	lbcIni3DDict
+
+"""
+const lbcIni3DDict = Dict("SWB"=>[1,2,3],
+					"SWT"=>[1,2,3],
+					"NWB"=>[1,2,3],
+					"SEB"=>[1,2,3])
 
 """
 
@@ -18,6 +41,13 @@ const lbcIniDict = Dict("SWB"=>[1,2,3],
 function lbcIni(abq::AbqModel)
 	bc = Array{BoundCon,1}()
 	i=0
+    if abq.pbcdim == 1
+        lbcIniDict = lbcIni1DDict
+    elseif abq.pbcdim == 2
+        lbcIniDict = lbcIni2DDict
+    elseif abq.pbcdim == 3
+        lbcIniDict = lbcIni3DDict
+    end
 	for v in keys(lbcIniDict)
 		for d in lbcIniDict[v]
 			i+=1
