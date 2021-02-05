@@ -214,9 +214,9 @@ function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; free=true, name="lc
 	Δu_1 = strain * [1; 0; 0] * abq.dim[abq.csys[1]]
 	Δu_2 = strain * [0; 1; 0] * abq.dim[abq.csys[2]]
 	Δu_3 = strain * [0; 0; 1] * abq.dim[abq.csys[3]]
-    u_1_bool = !prod(Δu_1.==0) ? trues(3) : falses(3)
-    u_2_bool = !prod(Δu_2.==0) ? trues(3) : falses(3)
-    u_3_bool = !prod(Δu_3.==0) ? trues(3) : falses(3)
+    u_1_bool = !prod([Δu_1[1]==0 Δu_2[1]==0 Δu_3[1]==0]) ? trues(3) : falses(3)
+    u_2_bool = !prod([Δu_1[2]==0 Δu_2[2]==0 Δu_3[2]==0]) ? trues(3) : falses(3)
+    u_3_bool = !prod([Δu_1[3]==0 Δu_2[3]==0 Δu_3[3]==0]) ? trues(3) : falses(3)
 	i = 0
 	push!(boundaries, BoundCon("BC-01", true, "SWB", abq.csys[1]))
 	push!(boundaries, BoundCon("BC-02", true, "SWB", abq.csys[2]))
