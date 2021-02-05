@@ -69,7 +69,7 @@ end
 function show(io::IO,abq::AbqModel)
 	print(io,"AbqModel($(abq.file), $(abq.eqns), $(abq.steps))")
 end
- 
+
 """
 
 	coords
@@ -200,34 +200,33 @@ function updateNodes!(abq::AbqModel)
 	insert!(Line(abq.inp,r"End Assembly"),sets)
 	@info "Node designation added to input file."
 	return
-end	
+end
 
 """
 
-	LoadCase3D(strain::Matrix{Number}, abq::AbqModel; new=true, name="lc")
+	LoadCase3D(strain::Matrix{Number}, abq::AbqModel;free=true, new=true, name="lc")
 
 Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
 """
-function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; new=false, name="lc")
+function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; free=true, name="lc")
 	!(length(size(strain))==2 && size(strain, 1)==3 && size(strain,2)==3) && @error "Expected a (3, 3)-array as strain tensor! Got a $(size(strain))-array!"
 	boundaries = Array{BoundCon,1}()
 	Δu_1 = strain * [1; 0; 0] * abq.dim[abq.csys[1]]
 	Δu_2 = strain * [0; 1; 0] * abq.dim[abq.csys[2]]
 	Δu_3 = strain * [0; 0; 1] * abq.dim[abq.csys[3]]
 	i = 0
-	name = new ? "$(name)*" : name
 	push!(boundaries, BoundCon("BC-01", new, "SWB", abq.csys[1]))
 	push!(boundaries, BoundCon("BC-02", new, "SWB", abq.csys[2]))
 	push!(boundaries, BoundCon("BC-03", new, "SWB", abq.csys[3]))
-	push!(boundaries, BoundCon("BC-04", new, "SWT", abq.csys[1], Δu_1[1]))
-	push!(boundaries, BoundCon("BC-05", new, "SWT", abq.csys[2], Δu_1[2]))
-	push!(boundaries, BoundCon("BC-06", new, "SWT", abq.csys[3], Δu_1[3]))
-	push!(boundaries, BoundCon("BC-07", new, "NWB", abq.csys[1], Δu_2[1]))
-	push!(boundaries, BoundCon("BC-08", new, "NWB", abq.csys[2], Δu_2[2]))
-	push!(boundaries, BoundCon("BC-09", new, "NWB", abq.csys[3], Δu_2[3]))
-	push!(boundaries, BoundCon("BC-10", new, "SEB", abq.csys[1], Δu_3[1]))
-	push!(boundaries, BoundCon("BC-11", new, "SEB", abq.csys[2], Δu_3[2]))
-	push!(boundaries, BoundCon("BC-12", new, "SEB", abq.csys[3], Δu_3[3]))
+	free && Δu_1[1]==0 && push!(boundaries, BoundCon("BC-04", new, "SWT", abq.csys[1], Δu_1[1]))
+	free && Δu_1[2]==0 && push!(boundaries, BoundCon("BC-05", new, "SWT", abq.csys[2], Δu_1[2]))
+	free && Δu_1[3]==0 && push!(boundaries, BoundCon("BC-06", new, "SWT", abq.csys[3], Δu_1[3]))
+	free && Δu_2[1]==0 && push!(boundaries, BoundCon("BC-07", new, "NWB", abq.csys[1], Δu_2[1]))
+	free && Δu_2[2]==0 && push!(boundaries, BoundCon("BC-08", new, "NWB", abq.csys[2], Δu_2[2]))
+	free && Δu_2[3]==0 && push!(boundaries, BoundCon("BC-09", new, "NWB", abq.csys[3], Δu_2[3]))
+	free && Δu_3[1]==0 && push!(boundaries, BoundCon("BC-10", new, "SEB", abq.csys[1], Δu_3[1]))
+	free && Δu_3[2]==0 && push!(boundaries, BoundCon("BC-11", new, "SEB", abq.csys[2], Δu_3[2]))
+	free && Δu_3[3]==0 && push!(boundaries, BoundCon("BC-12", new, "SEB", abq.csys[3], Δu_3[3]))
 	return LoadCase(name,boundaries)
 end
 
@@ -237,10 +236,10 @@ end
 
 Returns a LoadCase defined by the given effective strain tensor strain used for a 3D periodic structure.
 """
-function LoadCase(strain::Matrix{<:Number}, abq::AbqModel; new=true, name="lc")
+function LoadCase(strain::Matrix{<:Number}, abq::AbqModel;free=free, name="lc")
 	abq.pbcdim == 1 && (@warn "Function not yet defined for 1D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
 	abq.pbcdim == 2 && (@warn "Function not yet defined for 2D periodicity!"; return LoadCase(name, Array{BoundCon,1}()))
-	abq.pbcdim == 3 && return LoadCase3D(strain, abq; new=new, name=name)
+	abq.pbcdim == 3 && return LoadCase3D(strain, abq;free=free, name=name)
 end
 
 """
