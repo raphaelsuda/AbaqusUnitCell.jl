@@ -214,23 +214,32 @@ function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; free=true, name="lc
 	Δu_1 = strain * [1; 0; 0] * abq.dim[abq.csys[1]]
 	Δu_2 = strain * [0; 1; 0] * abq.dim[abq.csys[2]]
 	Δu_3 = strain * [0; 0; 1] * abq.dim[abq.csys[3]]
-    u_1_bool = !prod([Δu_1[1]==0 Δu_2[1]==0 Δu_3[1]==0]) ? trues(3) : falses(3)
-    u_2_bool = !prod([Δu_1[2]==0 Δu_2[2]==0 Δu_3[2]==0]) ? trues(3) : falses(3)
-    u_3_bool = !prod([Δu_1[3]==0 Δu_2[3]==0 Δu_3[3]==0]) ? trues(3) : falses(3)
+
+    Δu = [Δu_1 Δu_2 Δu_3];
+
+    u_bool = falses(3,3)
+    for i in 1:3
+        for j in 1:3
+            if Δu[i,j] != 0
+                u_bool[:,i] = trues(3)
+                u_bool[j,i] = true
+            end
+        end
+    end
 	i = 0
 	push!(boundaries, BoundCon("BC-01", true, "SWB", abq.csys[1]))
 	push!(boundaries, BoundCon("BC-02", true, "SWB", abq.csys[2]))
 	push!(boundaries, BoundCon("BC-03", true, "SWB", abq.csys[3]))
 	if free
-        u_1_bool[1] ? push!(boundaries, BoundCon("BC-04", true, "SWT", abq.csys[1], Δu_1[1])) : push!(boundaries, BoundCon("BC-04", true, "", abq.csys[1]))
-        u_2_bool[1] ? push!(boundaries, BoundCon("BC-05", true, "SWT", abq.csys[2], Δu_1[2])) : push!(boundaries, BoundCon("BC-05", true, "", abq.csys[1]))
-        u_3_bool[1] ? push!(boundaries, BoundCon("BC-06", true, "SWT", abq.csys[3], Δu_1[3])) : push!(boundaries, BoundCon("BC-06", true, "", abq.csys[1]))
-        u_1_bool[2] ? push!(boundaries, BoundCon("BC-07", true, "NWB", abq.csys[1], Δu_2[1])) : push!(boundaries, BoundCon("BC-07", true, "", abq.csys[1]))
-        u_2_bool[2] ? push!(boundaries, BoundCon("BC-08", true, "NWB", abq.csys[2], Δu_2[2])) : push!(boundaries, BoundCon("BC-08", true, "", abq.csys[1]))
-        u_3_bool[2] ? push!(boundaries, BoundCon("BC-09", true, "NWB", abq.csys[3], Δu_2[3])) : push!(boundaries, BoundCon("BC-09", true, "", abq.csys[1]))
-        u_1_bool[3] ? push!(boundaries, BoundCon("BC-10", true, "SEB", abq.csys[1], Δu_3[1])) : push!(boundaries, BoundCon("BC-10", true, "", abq.csys[1]))
-        u_2_bool[3] ? push!(boundaries, BoundCon("BC-11", true, "SEB", abq.csys[2], Δu_3[2])) : push!(boundaries, BoundCon("BC-11", true, "", abq.csys[1]))
-        u_3_bool[3] ? push!(boundaries, BoundCon("BC-12", true, "SEB", abq.csys[3], Δu_3[3])) : push!(boundaries, BoundCon("BC-12", true, "", abq.csys[1]))
+        u_bool[1,1] ? push!(boundaries, BoundCon("BC-04", true, "SWT", abq.csys[1], Δu_1[1])) : push!(boundaries, BoundCon("BC-04", true, "", abq.csys[1]))
+        u_bool[1,2] ? push!(boundaries, BoundCon("BC-05", true, "SWT", abq.csys[2], Δu_1[2])) : push!(boundaries, BoundCon("BC-05", true, "", abq.csys[1]))
+        u_bool[1,3] ? push!(boundaries, BoundCon("BC-06", true, "SWT", abq.csys[3], Δu_1[3])) : push!(boundaries, BoundCon("BC-06", true, "", abq.csys[1]))
+        u_bool[2,1] ? push!(boundaries, BoundCon("BC-07", true, "NWB", abq.csys[1], Δu_2[1])) : push!(boundaries, BoundCon("BC-07", true, "", abq.csys[1]))
+        u_bool[2,2] ? push!(boundaries, BoundCon("BC-08", true, "NWB", abq.csys[2], Δu_2[2])) : push!(boundaries, BoundCon("BC-08", true, "", abq.csys[1]))
+        u_bool[2,3] ? push!(boundaries, BoundCon("BC-09", true, "NWB", abq.csys[3], Δu_2[3])) : push!(boundaries, BoundCon("BC-09", true, "", abq.csys[1]))
+        u_bool[3,1] ? push!(boundaries, BoundCon("BC-10", true, "SEB", abq.csys[1], Δu_3[1])) : push!(boundaries, BoundCon("BC-10", true, "", abq.csys[1]))
+        u_bool[3,2] ? push!(boundaries, BoundCon("BC-11", true, "SEB", abq.csys[2], Δu_3[2])) : push!(boundaries, BoundCon("BC-11", true, "", abq.csys[1]))
+        u_bool[3,3] ? push!(boundaries, BoundCon("BC-12", true, "SEB", abq.csys[3], Δu_3[3])) : push!(boundaries, BoundCon("BC-12", true, "", abq.csys[1]))
     else
         push!(boundaries, BoundCon("BC-04", true, "SWT", abq.csys[1], Δu_1[1]))
         push!(boundaries, BoundCon("BC-05", true, "SWT", abq.csys[2], Δu_1[2]))
