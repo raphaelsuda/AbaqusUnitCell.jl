@@ -64,8 +64,8 @@ end
 """
 function generate(bc::BoundCon)
 	bcString = ["** Name: $(bc.name) Type: $(bc.type)",
-				"*Boundary",
-				"$(bc.node), $(bc.dof), $(bc.dof), $(bc.disp)"]
+				"*Boundary"]
+    bc.node != "" && push!(bcString, "$(bc.node), $(bc.dof), $(bc.dof), $(bc.disp)")
 	if bc.new
 		bcString[2]=string(bcString[2],", op=NEW")
 	end
