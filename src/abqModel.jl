@@ -217,13 +217,14 @@ function LoadCase3D(strain::Matrix{<:Number}, abq::AbqModel; free=true, name="lc
 
     Δu = [Δu_1 Δu_2 Δu_3];
 
-    u_bool = falses(3,3)
+    u_bool = trues(3,3)
+    for i in 1:3
+        u_bool[i,i] = false
+    end
     for i in 1:3
         for j in 1:3
             if Δu[i,j] != 0
-                u_bool[:,j] = trues(3)
-                u_bool[j,j] = false
-                u_bool[:,i] = trues(3)
+                u_bool[i,i] = true
             end
         end
     end
