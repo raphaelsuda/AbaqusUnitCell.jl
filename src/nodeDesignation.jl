@@ -87,14 +87,14 @@ end
 Function for sorting of an array containing nodes, according to their coordinates.
 Sorting considers x-coordinates first, y-coordinates second, and z-coordinates last.
 """
-function sortNodes(nodes::Array{GlobNode,1})
+function sortNodes(nodes::Array{GlobNode,1}; digits=3)
 	# Array with weighting factors for sorting of nodes
 	weights = [1e11 1e5 1]
 	# Initiate array, soon-to-hold the values decisive for sorting
 	sortVals = Array{Float64,1}()
 	# Fill array sortVals with values, calculated by coordinates
 	for n in nodes
-		sV = weights * n.node.coords
+		sV = weights * round(n.node.coords; digits=digits)
 		append!(sortVals,sV)
 	end
 	# Obtain array containing the order of the sorted elements
@@ -239,5 +239,3 @@ function nodeDesignation!(abq::AbqModel)
 	@info "Node designation written to AbqModel."
 	return
 end
-
-
