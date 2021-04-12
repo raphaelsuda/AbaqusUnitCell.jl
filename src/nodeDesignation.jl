@@ -94,7 +94,7 @@ function sortNodes(nodes::Array{GlobNode,1}; digits=3)
 	sortVals = Array{Float64,1}()
 	# Fill array sortVals with values, calculated by coordinates
 	for n in nodes
-		sV = weights * round(n.node.coords; digits=digits)
+		sV = weights * round.(n.node.coords; digits=digits)
 		append!(sortVals,sV)
 	end
 	# Obtain array containing the order of the sorted elements
