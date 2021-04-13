@@ -144,17 +144,18 @@ end
 """
 function setExceptions!(abq::AbqModel, exc::Array{String,1})
 	abq.exc = exc
-	print("Exceptions set for ")
+    info_text = ["Exceptions set for "]
 	n = length(exc)
 	for i = 1:n
 		if i == 1
-			print(exc[i])
+            push!(info_text, exc[i])
 		elseif i == n
-			print(", and $(exc[i]).\n")
+            push!(info_text, ", and $(exc[i]).")
 		else
-			print(", $(exc[i])")
+            push!(info_text, ", $(exc[i])")
 		end
 	end
+    @info join(info_text, "")
 	counter = 0
 	for i = 1:length(abq.nodes)
 		j = i - counter
