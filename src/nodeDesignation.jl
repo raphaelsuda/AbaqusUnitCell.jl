@@ -153,7 +153,6 @@ function findEdge(abq::AbqModel, name::AbstractString; include_vertices=false)
             isEqual(n.node.coords[axis3], abq.minC[axis3] + edges[name][3]*abq.dim[axis3], abq.tol)
         end
     else
-        @info "Search includes borders!"
         nodeBool = map(abq.nodes) do n
             !(n.instance in abq.exc) && # Is instance containing node in exceptions?
             isEqual(n.node.coords[axis2], abq.minC[axis2] + edges[name][2]*abq.dim[axis2], abq.tol) &&
@@ -176,7 +175,6 @@ function findEdges!(abq::AbqModel)
     elseif abq.pbcdim == 2
         for e in keys(edges)
             if e in ["NE", "NW", "SE", "SW"]
-                @info "Including Vertices in edge $(e)!"
                 abq.edges[e] = sortNodes(findEdge(abq, e; include_vertices=true))
             else
                 abq.edges[e] = sortNodes(findEdge(abq, e))
