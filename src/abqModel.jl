@@ -361,6 +361,7 @@ end
 
 """
 function updateSteps!(abq::AbqModel)
+    isempty(abq.steps) && (@info "No steps to append.";return)
 	stepString = Array{String,1}()
 	steps = deepcopy(abq.steps)
 	append!(stepString,["**","** BOUNDARY CONDITIONS","**"])
