@@ -140,17 +140,27 @@ end
 	findEdge(abq::AbqModel, name::AbstractString)
 
 """
-function findEdge(abq::AbqModel, name::AbstractString)
+function findEdge(abq::AbqModel, name::AbstractString; include_vertices=false)
 	axis1 = abq.csys[edges[name][1]]
 	axis2 = abq.csys[edgeCS[edges[name][1],1]]
 	axis3 = abq.csys[edgeCS[edges[name][1],2]]
-	nodeBool = map(abq.nodes) do n
-		!(n.instance in abq.exc) && # Is instance containing node in exceptions?
-		n.node.coords[axis1] > abq.minC[axis1] + abq.tol &&
-		n.node.coords[axis1] < abq.minC[axis1] + abq.dim[axis1] - abq.tol &&
-		isEqual(n.node.coords[axis2], abq.minC[axis2] + edges[name][2]*abq.dim[axis2], abq.tol) &&
-		isEqual(n.node.coords[axis3], abq.minC[axis3] + edges[name][3]*abq.dim[axis3], abq.tol)
-	end
+    if !include_vertices
+        nodeBool = map(abq.nodes) do n
+            !(n.instance in abq.exc) && # Is instance containing node in exceptions?
+            n.node.coords[axis1] > abq.minC[axis1] + abq.tol &&
+            n.node.coords[axis1] < abq.minC[axis1] + abq.dim[axis1] - abq.tol &&
+            isEqual(n.node.coords[axis2], abq.minC[axis2] + edges[name][2]*abq.dim[axis2], abq.tol) &&
+            isEqual(n.node.coords[axis3], abq.minC[axis3] + edges[name][3]*abq.dim[axis3], abq.tol)
+        end
+    else
+        nodeBool = map(abq.nodes) do n
+            !(n.instance in abq.exc) && # Is instance containing node in exceptions?
+            n.node.coords[axis1] ≥ abq.minC[axis1] + abq.tol &&
+            n.node.coords[axis1] ≤ abq.minC[axis1] + abq.dim[axis1] - abq.tol &&
+            isEqual(n.node.coords[axis2], abq.minC[axis2] + edges[name][2]*abq.dim[axis2], abq.tol) &&
+            isEqual(n.node.coords[axis3], abq.minC[axis3] + edges[name][3]*abq.dim[axis3], abq.tol)
+        end
+    end
 	return abq.nodes[nodeBool]
 end
 
@@ -160,9 +170,24 @@ end
 
 """
 function findEdges!(abq::AbqModel)
-	for e in keys(edges)
-		abq.edges[e] = sortNodes(findEdge(abq, e))
-	end
+    if abq.vertexFinder
+        for e in keys(edges)
+            abq.edges[e] = sortNodes(findEdge(abq, e))
+        end
+    elseif abq.pbcdim == 2
+        for e in keys(edges)
+            if e in ["NE", "NW", "SE", "SW"]
+                abq.edges[e] = sortNodes(findEdge(abq, e; include_vertices=true))
+            else
+                abq.edges[e] = sortNodes(findEdge(abq, e))
+            end
+        end
+    else
+        for e in keys(edges)
+            abq.edges[e] = sortNodes(findEdge(abq, e))
+        end
+    end
+
 	# Check if corresponding edges have equal node numbers
 	checkNum(abq.edges,"SW","NW")
 	checkNum(abq.edges,"SW","SE")
