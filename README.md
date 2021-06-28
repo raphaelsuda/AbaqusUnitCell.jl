@@ -6,12 +6,12 @@ The package contains functions for the following tasks:
 - defining homogeneous displacement boundary conditions, and
 - saving a new input-file with the defined boundary conditions.
 
-**The following sections are currently in progress and curreently incomplete.**
+**The following sections are currently in progress and therefore incomplete.**
 
 ## Model requirements
-- The planes, which are defined by the periodic surfaces of the structure, should form a cuboid
-- the surfaces have to be perpendicular or parallel to the coordinate axes
-- Mesh has to be the same on opposing surfaces
+- The planes, which are defined by the periodic surfaces of the structure, should form a cuboid.
+- The surfaces have to be perpendicular or parallel to the coordinate axes.
+- The mesh has to be similar on opposing surfaces.
 - If the structure is cuboid, the vertices can be found automatically, otherwise, the vertices have to be modelled as Reference-Points in the Assembly
 - When using tied surfaces or interactions:
 	- if the coupled surfaces intersect with a periodic surface, the slave nodes have to be collected in a set called "Slaves"
@@ -54,7 +54,7 @@ The edges and vertices are named after the surfaces intersecting in this edge or
 The loads can be defined by the macroscopic strain tensor $\langle\varepsilon\rangle$.
 This macroscopic strain tensor has to be formulated in the **local** coordinates!
 For 1D periodicity:
-$$\langle\varepsilon\rangle_{I\;I}$$
+<img src="https://render.githubusercontent.com/render/math?math=\langle\varepsilon\rangle_{I\;I}">
 For 2D periodicity:
 $$\langle\varepsilon\rangle = \begin{pmatrix}
 \langle\varepsilon_{II\;II}\rangle & \langle\varepsilon_{II\;III}\rangle \\
