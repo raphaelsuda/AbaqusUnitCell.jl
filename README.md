@@ -49,12 +49,16 @@ Figure with name convention
 The edges and vertices are named after the surfaces intersecting in this edge or vertex; for a shorter notation, only the first letters are taken into account (e.g. *SW* for the edge of *South* and *West* or **NWB** for the vertex of *North*, *West*, and *Bottom*).
 
 ## Periodic Boundary Conditions
+- [ ] Tolerance
+- [ ] Why are exceptions needed?
+- [ ] Why is setVertexFinder necessary?
+
 
 ## Load boundary conditions
 The loads can be defined by the macroscopic strain tensor $\langle\varepsilon\rangle$.
 This macroscopic strain tensor has to be formulated in the **local** coordinates!
 For 1D periodicity:
-<img src="https://render.githubusercontent.com/render/math?math=\langle\varepsilon\rangle_{I\;I}">
+$$\langle\varepsilon\rangle_{I\;I}$$
 For 2D periodicity:
 $$\langle\varepsilon\rangle = \begin{pmatrix}
 \langle\varepsilon_{II\;II}\rangle & \langle\varepsilon_{II\;III}\rangle \\
@@ -71,19 +75,36 @@ It should be noted that only macroscopic strains in the direction of periodicity
 
 ## Exported functions
 ### `AbqModel(path::String)`
+Reads the Input-File in path `path` and parses all the necessary information of the file for computing the boundary conditions.
+The functions return value is of type `AbqModel`.
 
 ### `setRefAxis!(abq::AbqModel, axis::String)`
+Changes the reference axis in the Model `abq` to the given `axis`.
+If the reference axis is not explicitly set, the default value `x` is used.
 
 ### `setTolerance!(abq::AbqModel, tol::Number)`
+Sets the tolerance used for finding corresponding nodes to the value `tol`.
+If the tolerance is not explicitly set, the default value `0.001` is used.
 
 ### `setExceptions!(abq::AbqModel, exc::Array{String,1})`
+Sets exceptions for defining the periodic boundary equations.
+For each nodal pair, the program checks, if the instance, on which the node is located, is set as exception.
+If so, the equation will not be written to the model.
+Therefore, the array `exc` has to contain all the instance names, which should be excluded from the equations.
 
 ### `setVertexFinder!(abq::AbqModel, val::Bool)`
+Defines, if the vertices should be found automatically (`val == true`) or if they have already been defined as Sets in the Assembly (`val == false`).
+If the VertexFinder is not set explicitly, the vertices will be defined automatically by default.
 
 ### `setPBCdim!(abq::AbqModel, dim::Float64)`
+Sets the dimension of periodicity in the model to the valu `dim`.
+If the dimension is not set explicitly, threedimensional periodicity is used by default.
 
 ### `nodeDesignation!(abq::AbqModel)`
+Searches for all the nodes, which are located on te surface of the cuboid unit cell and writes the definition of these nodes (essentially combinations of name and node number) to the given Model `abq`.
 
 ### `pbc!(abq::AbqModel)`
 
 ### `LoadCase(strain::Array{<:Number,2}, abq::AbqModel)`
+
+### `update!(abq::AbqModel)`
