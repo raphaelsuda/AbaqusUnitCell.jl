@@ -117,6 +117,7 @@ function findVertex(abq::AbqModel, name::AbstractString)
 		isEqual(n.node.coords[abq.csys[3]], abq.minC[abq.csys[3]] + vertices[name][3] * abq.dim[abq.csys[3]], abq.tol)
 	end
 	if length(abq.nodes[nodeBool]) != 1
+		@show abq.node[nodeBool]
 		throw(ToleranceError)
 	end
 	return abq.nodes[nodeBool][1]
