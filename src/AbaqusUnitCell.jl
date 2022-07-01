@@ -537,10 +537,10 @@ function readInstance(instLine::Line)
 	if length(inst) == 2
 		return Instance(part, name)
 	elseif length(inst) == 3
-		trans = parse.(Float64,match(trans_re,value(inst[2])).captures[[true,false,false,true,false,false,true,false,false]])
+		trans = parse.(Float64,match(trans_re,value(inst[2])).captures[[true,false,false,false,true,false,false,false,true,false,false,false]])
 		return Instance(part, name, trans)
 	elseif length(inst) == 4
-		trans = parse.(Float64,match(trans_re,value(inst[2])).captures[[true,false,false,true,false,false,true,false,false]])
+		trans = parse.(Float64,match(trans_re,value(inst[2])).captures[[true,false,false,false,true,false,false,false,true,false,false,false]])
 		rot_start, rot_end, angle_deg = load_rotate(value(inst[3]))
 		return Instance(part, name, trans, rot_start, rot_end, angle_deg)
 	else
