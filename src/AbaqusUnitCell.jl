@@ -521,7 +521,8 @@ function findInstances(f::File)
 	return Lines(f,r"\*Instance")
 end
 
-const trans_re = r"\s*(-?\d+.\d*(e(\+|-)\d+)?),\s*(-?\d+.\d*(e(\+|-)\d+)?),\s*(-?\d+.\d*(e(\+|-)\d+)?)"
+trans_float = "(-?\\d+(\\.\\d*)?(e(\\+|-)\\d+)?)"
+const trans_re = Regex("\\s*"*trans_float*",\\s*"*trans_float*",\\s*"*trans_float)
 
 """
 
