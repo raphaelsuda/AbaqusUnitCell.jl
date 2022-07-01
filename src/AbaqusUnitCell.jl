@@ -586,16 +586,16 @@ end
 
 """
 
-	ContactPair(master::String, slave::String)
+	ContactPair(primary::String, secondary::String)
 
 """
 mutable struct ContactPair
 	name::String
-	master::String
-	slave::String
+	primary::String
+	secondary::String
 end
 
-show(io::IO, cp::ContactPair) = print("ContactPair($(cp.name) Master:$(cp.master) <-> Slave:$(cp.slave))")
+show(io::IO, cp::ContactPair) = print("ContactPair($(cp.name) Master:$(cp.primary) <-> Slave:$(cp.secondary))")
 
 """
 
@@ -793,28 +793,28 @@ function count_char(str::String,char::Char)
 	return counter
 end
 
-const slave_re_1 = "\\s*(\\d+)"
-const slave_re_2 = ",\\s*(\\d+)"
+const secondary_re_1 = "\\s*(\\d+)"
+const secondary_re_2 = ",\\s*(\\d+)"
 
-function collect_slaves(f)
+function collect_secondaries(f)
 	try
-		set_lines = Lines(f,r"\*Nset, nset=Slaves, instance")
-		slaves = Dict{String,Array{Int64,1}}()
+		set_lines = Lines(f,r"\*Nset, nset=Exclude, instance")
+		secondaries = Dict{String,Array{Int64,1}}()
 		for sl in set_lines
 			instance = match(r"instance=(.*),?",value(sl)).captures[1]
 			node_def = Lines(f, r"\s*\d+,", after=sl, before=Line(f,r"\*",after=sl))
-			slave_nodes = Array{Int64,1}()
+			secondary_nodes = Array{Int64,1}()
 			for nl in node_def
 				n = count_char(value(nl),',')
-				re = Regex(slave_re_1*slave_re_2^n)
+				re = Regex(secondary_re_1*secondary_re_2^n)
 				nodes = parse.(Int64,match(re,value(nl)).captures)
-				append!(slave_nodes,nodes)
+				append!(secondary_nodes,nodes)
 			end
-			slaves[instance] = slave_nodes
+			secondaries[instance] = secondary_nodes
 		end
-		return slaves
+		return secondaries
 	catch
-		return Dict("Slaves"=>Int64[])
+		return Dict("Exclude"=>Int64[])
 	end
 end
 

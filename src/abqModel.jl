@@ -12,7 +12,7 @@ mutable struct AbqModel
 	parts::Dict{String,Part}
 	instances::Array{Instance,1}
 	nodes::Array{GlobNode,1}
-	slaves::Dict{String,Array{Int64,1}}
+	excludedNodes::Dict{String,Array{Int64,1}}
 	minC::Vector
 	maxC::Vector
 	dim::Vector
@@ -39,7 +39,7 @@ mutable struct AbqModel
 	function AbqModel(file::AbstractString)
 		inp = load(file)
 		parts, instances, nodes = loadGlobNodes(inp)
-		slaves = collect_slaves(inp)
+		excluded_nodes = collect_secondaries(inp)
 		minC, maxC, dim = getLength(nodes)
 		refAxis = "x"
 		defRA = true
@@ -56,7 +56,7 @@ mutable struct AbqModel
 		defDim = true
 		eqns = Array{Equation,1}()
 		steps = Array{Step,1}()
-		new(file, inp, parts, instances, nodes, slaves, minC, maxC, dim,
+		new(file, inp, parts, instances, nodes, excluded_nodes, minC, maxC, dim,
 			refAxis, defRA, vertexFinder, defVF, csys, tol, defTol, exc, vert, edge, face, pbcdim, defDim, eqns, steps)
 	end
 end

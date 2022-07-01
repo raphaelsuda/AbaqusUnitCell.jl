@@ -43,8 +43,8 @@ function pbc3D!(abq::AbqModel)
 	# edge NB
 	for n = 1:length(abq.edges["NB"])
 		this_node = abq.edges["NB"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -57,8 +57,8 @@ function pbc3D!(abq::AbqModel)
 	# edge ST
 	for n = 1:length(abq.edges["ST"])
 		this_node = abq.edges["ST"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -71,8 +71,8 @@ function pbc3D!(abq::AbqModel)
 	# edge NT
 	for n = 1:length(abq.edges["NT"])
 		this_node = abq.edges["NT"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -85,8 +85,8 @@ function pbc3D!(abq::AbqModel)
 	# edge EB
 	for n = 1:length(abq.edges["EB"])
 		this_node = abq.edges["EB"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -99,8 +99,8 @@ function pbc3D!(abq::AbqModel)
 	# edge WT
 	for n = 1:length(abq.edges["WT"])
 		this_node = abq.edges["WT"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -113,8 +113,8 @@ function pbc3D!(abq::AbqModel)
 	# edge ET
 	for n = 1:length(abq.edges["ET"])
 		this_node = abq.edges["ET"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -127,8 +127,8 @@ function pbc3D!(abq::AbqModel)
 	# edge SE
 	for n = 1:length(abq.edges["SE"])
 		this_node = abq.edges["SE"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -141,8 +141,8 @@ function pbc3D!(abq::AbqModel)
 	# edge NW
 	for n = 1:length(abq.edges["NW"])
 		this_node = abq.edges["NW"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -155,8 +155,8 @@ function pbc3D!(abq::AbqModel)
 	# edge NE
 	for n = 1:length(abq.edges["NE"])
 		this_node = abq.edges["NE"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -174,8 +174,8 @@ function pbc3D!(abq::AbqModel)
 	# face E
 	for n = 1:length(abq.faces["E"])
 		this_node = abq.faces["E"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -188,8 +188,8 @@ function pbc3D!(abq::AbqModel)
 	# face N
 	for n = 1:length(abq.faces["N"])
 		this_node = abq.faces["N"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
@@ -202,8 +202,8 @@ function pbc3D!(abq::AbqModel)
 	# face T
 	for n = 1:length(abq.faces["T"])
 		this_node = abq.faces["T"][n]
-		if this_node.instance in keys(abq.excluded_nodes)
-			if this_node.node.num in abq.excluded_nodes[this_node.instance]
+		if this_node.instance in keys(abq.slaves)
+			if this_node.node.num in abq.slaves[this_node.instance]
 				continue
 			end
 		end
