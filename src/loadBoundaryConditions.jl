@@ -161,7 +161,7 @@ function generate(step::Step)
 # 	append!(stepString,generate(step.loadCase))
 	stepString = ["** --------------------------------------------------",
 				  "**","** STEP: $(step.name)","**",
-				  "*Step, name=$(step.name), nlgeom=NO",
+				  "*Step, name=$(step.name), nlgeom=NO, inc=$(step.inc)",
 				  "*Static",
 				  "$(step.iStart), $(step.iTot), $(step.iMin), $(step.iMax)"]
 	append!(stepString,generate(step.loadCase))
